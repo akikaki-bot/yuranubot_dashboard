@@ -15,7 +15,7 @@ export interface RESTGeneralSettingData {
 }
 
 export interface RESTGeneralUserSettingData {
-    vc_speaker : number
+    vc_speaker : string
     connect_msg : string
     disconnect_msg : string
     speak_speed : number
