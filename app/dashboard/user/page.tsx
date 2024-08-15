@@ -151,7 +151,7 @@ export default function Library() {
                         </div>
                         <div className="flex flex-col gap-4 my-2">
                             <h1 className="text-3xl font-semibold"> 話者 </h1>
-                            <p className="text-xl p-2 my-3 border-l-3 ">話者を設定します。サーバーの設定を使用することもできます。</p>
+                            <p className="text-xl p-2 my-3 border-l-3 ">話者を設定します。サーバーの設定を使用することもできますよ。</p>
                             <div className="flex flex-col gap-4 items-center">
                                 <h2 className="flex text-2xl font-semibold justify-start w-full"> 設定中の話者 : { resolveSpeakerName( userSetting.vc_speaker )}</h2>
                                 <div className="w-full flex flex-row gap-4 items-center">
