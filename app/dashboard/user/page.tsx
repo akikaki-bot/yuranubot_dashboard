@@ -69,8 +69,8 @@ export default function Library() {
             userSetting.disconn_msg === baseUserChangedSetting.disconn_msg
         ) return;
 
-        if( userSetting.conn_msg.length === 0 ) userSetting.conn_msg = "nan"
-        if( userSetting.disconn_msg.length === 0 ) userSetting.disconn_msg = "nan"
+        if( userSetting.conn_msg && userSetting.conn_msg.length === 0 ) userSetting.conn_msg = "nan"
+        if( userSetting.disconn_msg && userSetting.disconn_msg.length === 0 ) userSetting.disconn_msg = "nan"
 
         //@ts-ignore
         delete userSetting.connect_msg
