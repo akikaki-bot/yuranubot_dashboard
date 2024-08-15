@@ -26,10 +26,10 @@ export default function Library() {
     }, [ user ])
 
     useEffect(() => {
-        if( userSetting === null ) return;
-        if( !loaded ) return;
-        const diff = checkDiff()
-        setDiffApplied( diff )
+        if( userSetting !== null || baseUserChangedSetting !== null || loaded !== false ){
+            const diff = checkDiff()
+            setDiffApplied( diff )
+        }
     }, [userSetting])
 
     async function init() {
@@ -43,9 +43,11 @@ export default function Library() {
         setBaseUserChangedSetting(userSetting)
         setUserSetting(userSetting)
         setLoaded(true)
+        setDiffApplied(false)
     }
 
     function checkDiff() {
+        if( loaded === false ) return false;
         if( userSetting === null || baseUserChangedSetting === null ) return false;
         if( 
             userSetting.speak_speed === baseUserChangedSetting.speak_speed &&
@@ -90,7 +92,7 @@ export default function Library() {
         <SidebarComopnent user={ user ?? undefined }>
             <h1 className="text-4xl font-semibold"> User Settings </h1>
             <p className="">ユーザー読み上げ設定</p>
-            <Toast show={ diffApplied } save={ saveSetting } unSave={() => { setUserSetting(baseUserChangedSetting) }} />
+            <Toast show={ diffApplied && loaded && userSetting !== null && baseUserChangedSetting !== null } save={ saveSetting } unSave={() => { setUserSetting(baseUserChangedSetting) }} />
             {
                 error !== null ? <p className="text-red-500"> ユーザー設定の取得に失敗しました。<br /> サーバーが落ちているか、単純に情報の取得に失敗したかのどちらかの原因です。<br /> エラーコード： {error} <br /> を開発者に伝えていただけるようお願いいたします。</p> :
                 null
@@ -139,7 +141,7 @@ export default function Library() {
                                 <Select
                                     className="max-w-xs"
                                     label = "話者を選択"
-                                    defaultSelectedKeys={ userSetting.vc_speaker ?? "-1" }
+                                    //defaultSelectedKeys={ userSetting.vc_speaker ?? "-1" }
                                     onChange={(e) => {
                                         setUserSetting({ ...userSetting, vc_speaker : e.target.value })
                                     }}
