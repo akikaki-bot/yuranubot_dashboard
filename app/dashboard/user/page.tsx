@@ -26,7 +26,7 @@ export default function Library() {
 
     useEffect(() => {
         if( user === null ) return;
-        init()
+        init( )
     }, [ user ])
 
     useEffect(() => {
