@@ -2,9 +2,11 @@
 import { SidebarComopnent } from "@/components/sidebar.dashboard";
 import { Toast } from "@/components/toast";
 import { voiceVoxSpeakers } from "@/constants/voicevox_speakers";
+import { Speakers, SpeakersEmotion, VoiceVoxSpeakers } from "@/constants/voicevox_speakers.emotion";
 import { useAPI } from "@/hook/useServerSettings";
 import { useUser } from "@/hook/useUser";
 import { RESTGeneralUserSettingData } from "@/types";
+import { getSpeakerUUIDFromName, resolveSpeakerFromId } from "@/utils/resolveSpeaker";
 import { resolveSpeakerName } from "@/utils/resolveSpeakerName";
 import { Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -13,6 +15,8 @@ import { useEffect, useState } from "react";
 export default function Library() {
     const { user, refresh }= useUser()
     const { getUserSetting, postUserSetting } = useAPI()
+
+    const [ userSpeaker, setUserSpeaker ] = useState< Speakers | null >()
 
     const [ userSetting, setUserSetting ] = useState<RESTGeneralUserSettingData | null>(null)
     const [ error, setError ] = useState<string | null>(null)
@@ -40,6 +44,12 @@ export default function Library() {
             return;
         }
 
+        const speaker = resolveSpeakerFromId( userSetting.vc_speaker )
+        if( speaker === "Unknown" ) {
+            setUserSpeaker("春日部つむぎ")
+        } else {
+            setUserSpeaker( speaker )
+        }
         setBaseUserChangedSetting(userSetting)
         setUserSetting(userSetting)
         setLoaded(true)
@@ -72,6 +82,7 @@ export default function Library() {
         if( userSetting.conn_msg && userSetting.conn_msg.length === 0 ) userSetting.conn_msg = "nan"
         if( userSetting.disconn_msg && userSetting.disconn_msg.length === 0 ) userSetting.disconn_msg = "nan"
 
+        userSetting.speak_speed = parseFloat(userSetting.speak_speed.toString())
         //@ts-ignore
         delete userSetting.connect_msg
         //@ts-ignore
@@ -87,6 +98,11 @@ export default function Library() {
         setDiffApplied(false)
         console.log(`Setting saved.`)
     }
+
+    useEffect(() => {
+        console.log( userSpeaker )
+        console.log( SpeakersEmotion[userSpeaker ?? "春日部つむぎ"] )
+    }, [userSpeaker])
 
     return (
         <SidebarComopnent user={ user ?? undefined }>
@@ -109,7 +125,7 @@ export default function Library() {
                 (
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4 my-2">
-                            <p className="text-xl p-2 my-3 border-l-3  from-transparent bg-gradient-to-r to-yellow-100 max-w-4xl">一部設定はサーバー側で設定されており、ユーザー側で特段設定する必要のないものがあります。</p>
+                            <p className="text-xl p-2 my-3 border-l-3  from-transparent bg-gradient-to-r to-yellow-100 max-w-4xl">一部設定はサーバー側で設定されており、ユーザー側で特段設定する必要のないものがあります。また....ここでは実装がされていますが、Bot側で実装されていない機能等がある可能性があり、Bot側で正常に表示されない等の不具合が生じる可能性があります。</p>
                             <h1 className="text-3xl font-semibold"> 読み上げスピード </h1>
                             <p className="text-xl p-2 my-3 border-l-3 ">読み上げスピードを設定します。ここの設定が0であるとサーバーの設定を参照し、最小値は0.5です。</p>
                             <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -136,22 +152,48 @@ export default function Library() {
                         <div className="flex flex-col gap-4 my-2">
                             <h1 className="text-3xl font-semibold"> 話者 </h1>
                             <p className="text-xl p-2 my-3 border-l-3 ">話者を設定します。サーバーの設定を使用することもできます。</p>
-                            <div className="flex flex-row gap-4 items-center">
-                                <p className="text-xl max-w-lg"> 現在：{ resolveSpeakerName(userSetting.vc_speaker) }</p>
-                                <Select
-                                    className="max-w-xs"
-                                    label = "話者を選択"
-                                    //defaultSelectedKeys={ userSetting.vc_speaker ?? "-1" }
-                                    onChange={(e) => {
-                                        setUserSetting({ ...userSetting, vc_speaker : e.target.value })
-                                    }}
-                                >
-                                    {Object.keys(voiceVoxSpeakers).map(( speakerId ) => {
-                                        return (
-                                            <SelectItem key={speakerId} value={speakerId}> {voiceVoxSpeakers[speakerId]} </SelectItem>
-                                        )
-                                    })}
-                                </Select>
+                            <div className="flex flex-col gap-4 items-center">
+                                <h2 className="flex text-2xl font-semibold justify-start w-full"> 設定中の話者 : { resolveSpeakerName( userSetting.vc_speaker )}</h2>
+                                <div className="w-full flex flex-row gap-4 items-center">
+                                    <Select
+                                        className="max-w-xs"
+                                        label = "話者"
+                                        placeholder="話者を選択"
+                                        defaultSelectedKeys={[getSpeakerUUIDFromName( userSpeaker ?? "春日部つむぎ" )]}
+                                        onChange={(e) => {
+                                            if( (e.target.value as keyof typeof VoiceVoxSpeakers) === "-1" ){
+                                                setUserSpeaker("サーバーの設定を参照する")
+                                                setUserSetting({ ...userSetting, vc_speaker : "-1" })
+                                                return;
+                                            }
+                                            setUserSpeaker( VoiceVoxSpeakers[e.target.value as keyof typeof VoiceVoxSpeakers] )
+                                        }}
+                                        description={`選択中 : ${ userSpeaker ?? "選択されていないようです。" }`}
+                                    >
+                                        {
+                                            Object.keys(VoiceVoxSpeakers).map(( speakerId ) => (
+                                                // @ts-ignore
+                                                <SelectItem key={speakerId} > {VoiceVoxSpeakers[speakerId]} </SelectItem>
+                                            ))
+                                        }
+                                    </Select>
+                                    <Select
+                                        className="max-w-xs"
+                                        label = "感情"
+                                        placeholder="感情を選択"
+                                        isDisabled={ userSpeaker === null || userSpeaker === "サーバーの設定を参照する" || typeof userSpeaker === "undefined" }
+                                        onChange={(e) => {
+                                            setUserSetting({ ...userSetting, vc_speaker : e.target.value })
+                                        }}
+                                        description={`${typeof userSpeaker === "undefined" ? "なんもない" : `表示中 : ${ userSpeaker }の感情一覧`} `}
+                                    >
+                                        {
+                                            SpeakersEmotion[userSpeaker ?? "春日部つむぎ"].map(( emotion, index ) => (
+                                                <SelectItem key={emotion.id} value={emotion.id}> {emotion.emotion} </SelectItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-4 my-2">
