@@ -1,12 +1,12 @@
 "use client";
 import { Spinner } from "@nextui-org/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 
 
 
-export default function S() {
+export function Elem() {
 
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -27,3 +27,11 @@ export default function S() {
         <> <Spinner /> ログイン処理中 </>
     )
 } 
+
+export default function S(){
+    return (
+        <Suspense fallback={"loading redirect..."}>
+            <Elem />
+        </Suspense>
+    )
+}
