@@ -12,6 +12,13 @@ export default function Layout({
     params: { id: string }
 }) {
 
+    return (
+        <div className="flex flex-col w-full min-h-screen h-svh justify-center items-center">
+            <h1 className="text-4xl font-semibold"> こっちは作成中です... </h1>
+            <p>ゆるしてね、Userの方は使えるよ</p>
+        </div>
+    )
+
     const router = useRouter()
 
     useEffect(() => {

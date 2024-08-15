@@ -60,6 +60,10 @@ export function useAPI(){
             },
             method: 'GET'
         })
+        .catch((e) => {
+            return { message : "failed to fetch..." }
+        })
+        if( "message" in response ) return response;
         return response.json() as Promise<T>;
     } 
 

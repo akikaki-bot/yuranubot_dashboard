@@ -25,9 +25,9 @@ export function useGuild( guildId : string | null = null ) {
         if( !response.ok ) return;
         if( 'message' in guildDatas ) return;
 
-        const adminUserGuilds = guildDatas.guilds.filter(
+        const adminUserGuilds = guildDatas.guilds/*.filter(
             ({ permissions }) => (parseInt(permissions as string) & 0x8) === 0x8
-        )
+        )*/
 
         console.log(`adminUserGuilds`, adminUserGuilds)
 

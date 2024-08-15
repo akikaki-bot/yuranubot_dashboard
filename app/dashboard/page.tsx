@@ -10,6 +10,9 @@ export default function Dashboard() {
     const { guildList } = useGuild();
     return (
         <SidebarComopnent>
+            <h1 className="text-4xl font-semibold"> {"←"} ユーザー設定はこっち </h1>
+            {
+                /*
             <h1 className="text-4xl font-semibold"> Dashboard </h1>
             <p className="">サーバーの選択</p>
             <div className="flex flex-col justify-center items-center">
@@ -27,10 +30,9 @@ export default function Dashboard() {
                                     <Image 
                                         alt={`${guild.name}のアイコン`} 
                                         className="rounded-xl shadow-lg" 
-                                        src={ guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png` : "https://cdn.discordapp.com/embed/avatars/0.png"} 
+                                        src={ guild.icon ? guild.icon.slice(0, 2).includes("a_") ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.gif` : `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png` : "https://cdn.discordapp.com/embed/avatars/0.png"} 
                                         width={100} 
-                                        height={100} 
-                                        
+                                        height={100}            
                                     />
                                     <h1 className="text-xl pt-2"> {guild.name} </h1>
                                 </Link>
@@ -39,6 +41,8 @@ export default function Dashboard() {
                     }
                 </div>
             </div>
+            */
+        }
         </SidebarComopnent>
     )
 }

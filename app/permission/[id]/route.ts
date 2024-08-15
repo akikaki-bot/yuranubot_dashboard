@@ -19,6 +19,23 @@ export async function GET( request : NextRequest ) {
     const id = request.url.split('/')[4] as string;
     const token = request.headers.get('Authorization');
 
+    const botGuild = async () => {
+        const res = await fetch(`https://discord.com/api/users/@me/guilds`, {
+            headers : {
+                Authorization : `Bot ${process.env.BOT_TOKEN}`,
+                "Content-Type" : "application/json",
+            },
+            cache : "force-cache",
+            method : "GET"
+        })
+        const guildDatas = await res.json() as RESTGetAPIGuildResult[] | RESTRateLimit;
+
+        if( !res.ok ) return [];
+        if( 'message' in guildDatas ) return [];
+
+        return guildDatas
+    }
+
     const fetchGuild = async () => {
         const res = await fetch(`https://discord.com/api/users/@me/guilds`, {
             headers : {
@@ -33,10 +50,10 @@ export async function GET( request : NextRequest ) {
         if( !res.ok ) return { guildList : null };
         if( 'message' in guildDatas ) return { guildList : null };
 
+        const botGuildDatas = await botGuild();        
 
-        const adminUserGuilds = guildDatas.filter(
-            ({ permissions }) => (parseInt(permissions as string) & 0x8) === 0x8
-        )
+
+        const adminUserGuilds = guildDatas.filter( v => botGuildDatas.map( v => v.id ).includes(v.id) )
 
         return {
             guildList : adminUserGuilds
@@ -47,7 +64,7 @@ export async function GET( request : NextRequest ) {
         // クアッシュ
         const cached = cache.get(id) as cacheObject;
         // 1min
-        if( ( cached.getBy.getTime() + 1000 * 60 * 1 ) > Date.now() || cached.guilds.length != 0) {
+        if( ( cached.getBy.getTime() + 1000 * 60 * 0.1 ) > Date.now() || cached.guilds.length != 0) {
             return NextResponse.json({
                 "__cache" : "true",
                 guilds : cached.guilds

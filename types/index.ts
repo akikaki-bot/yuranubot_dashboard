@@ -8,16 +8,23 @@ export interface RESTGeneralSettingData {
     auto_connect    : SnowFlake
     speak_speed     : number
     length_limit    : number
-    join_message    : string
-    exit_message    : string
-    connect_message : string
+    vc_join_message    : string
+    vc_exit_message    : string
     vc_speaker      : number
 }
 
 export interface RESTGeneralUserSettingData {
     vc_speaker : string
-    connect_msg : string
-    disconnect_msg : string
+    conn_msg : string
+    disconn_msg : string
+    /** ※ float */
+    speak_speed : number
+}
+
+export interface RESTGetGeneralUserSettingData {
+    vc_speaker : string
+    vc_join_message : string
+    vc_exit_message : string
     speak_speed : number
 }
 
