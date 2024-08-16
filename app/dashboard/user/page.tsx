@@ -183,6 +183,7 @@ export default function Library() {
                                         placeholder="感情を選択"
                                         isDisabled={ userSpeaker === null || userSpeaker === "サーバーの設定を参照する" || typeof userSpeaker === "undefined" }
                                         onChange={(e) => {
+                                            if( e.target.value === null || typeof e.target.value === "undefined" || e.target.value === '') return;
                                             setUserSetting({ ...userSetting, vc_speaker : e.target.value })
                                         }}
                                         description={`${typeof userSpeaker === "undefined" ? "なんもない" : `表示中 : ${ userSpeaker }の感情一覧`} `}
