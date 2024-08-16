@@ -79,14 +79,14 @@ export function SidebarComopnent({ children, guildId, user }: { children: ReactN
 
     return (
         <main>
-            <button onClick={() => setOpen(isOpen ? false : true)} aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <button onClick={() => setOpen(isOpen ? false : true)} aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                 </svg>
             </button>
             <aside id="default-sidebar" className={`fixed top-[64px] left-0 z-40 w-64 h-screen transition-transform ${isOpen ? "-translate-x-0" : "-translate-x-full"} sm:translate-x-0`} aria-label="Sidebar">
-                <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+                <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 ">
                     <ul className="space-y-2 font-medium">
                         <li key={99921} className="ms-2">
                             {
@@ -102,8 +102,8 @@ export function SidebarComopnent({ children, guildId, user }: { children: ReactN
                                     <div className="flex items-center gap-2 mt-2">
                                         <div className="w-8 h-8 bg-gray-300 rounded-full animate-pulse" />
                                         <div className="flex flex-col gap-4">
-                                            <div className="w-20 h-4 bg-gray-300 dark:bg-gray-700 rounded-sm animate-pulse" />
-                                            <div className="w-10 h-4 bg-gray-300 dark:bg-gray-700 rounded-sm animate-pulse" />
+                                            <div className="w-20 h-4 bg-gray-300 rounded-sm animate-pulse" />
+                                            <div className="w-10 h-4 bg-gray-300 rounded-sm animate-pulse" />
                                         </div>
                                     </div>
                                 ) : typeof user === "object" && user !== null ? (
@@ -128,8 +128,8 @@ export function SidebarComopnent({ children, guildId, user }: { children: ReactN
                         {
                             isOpen && (
                                 <li key={9992}>
-                                    <a onClick={() => setOpen(isOpen ? false : true)} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                        <svg className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <a onClick={() => setOpen(isOpen ? false : true)} className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                                        <svg className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                             <path d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z' />
                                         </svg>
                                         <span className="ms-3 font-bold"> サイドバーを閉じる </span>
@@ -138,7 +138,7 @@ export function SidebarComopnent({ children, guildId, user }: { children: ReactN
                             )
                         }
                         <li key={9993}>
-                            <Link onClick={() => setOpen(false)} href={`/dashboard`} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <Link onClick={() => setOpen(false)} href={`/dashboard`} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
                                 <div className="w-5 h-5">
                                     ＜
                                 </div>
@@ -156,7 +156,7 @@ export function SidebarComopnent({ children, guildId, user }: { children: ReactN
                                         <Link onClick={() => { setOpen(false); }} href={`${absolutePath}/${menu.href}`} className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 ${currentMenu === menu.tag ? "dark:bg-gray-700 bg-gray-100" : " "} dark:hover:bg-gray-700  group `}>
                                             {
                                                 typeof menu.iconSVG !== "undefined" && (
-                                                    <svg className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                                    <svg className="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-700 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                                         {menu.iconSVG}
                                                     </svg>
                                                 )
