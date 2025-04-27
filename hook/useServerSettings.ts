@@ -1,6 +1,6 @@
 import { RESTDictionaryData, RESTGeneralSettingData, RESTGeneralUserSettingData } from "@/types";
 
-export const APIURL = "https://api.yuranu.net"
+export const APIURL = "https://api.omanko.blog"
 
 interface ResultMessage {
     message : string
