@@ -12,7 +12,7 @@
     "@nextui-org/react": "^2.3.6",
     "discord-api-types": "^0.37.84",
     "framer-motion": "^11.2.4",
-    "next": "14.2.3",
+    "next": "14.2.35",
     "next-nprogress-bar": "^2.3.13",
     "nextjs-progressbar": "^0.0.16",
     "react": "^18",
